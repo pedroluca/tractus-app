@@ -1,4 +1,5 @@
 import { View } from 'react-native'
+import { useTabBarInset } from '@/components/floating-tab-bar'
 import { StreakPill } from '@/components/streak-pill'
 import { TabHeader } from '@/components/ui/screen'
 import { TrainingView } from '@/features/training/training-view'
@@ -13,10 +14,12 @@ function greeting() {
 
 export default function TrainingScreen() {
   const profile = useCurrentUser()
+  const tabBarInset = useTabBarInset()
   const firstName = profile.nome?.split(' ')[0]
 
   return (
-    <View className="flex-1 bg-background">
+    // O carrossel ocupa a altura toda: termina acima da cápsula em vez de passar por trás dela
+    <View className="flex-1 bg-background" style={{ paddingBottom: tabBarInset }}>
       <TabHeader title="Treino" subtitle={firstName ? `${greeting()}, ${firstName}` : undefined} right={<StreakPill />} />
       <TrainingView viewer={profile} ownerId={profile.id} />
     </View>

@@ -21,6 +21,7 @@ import {
   Settings,
   Share2,
   Trash2,
+  TrendingUp,
   Upload,
 } from 'lucide-react-native'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -226,6 +227,7 @@ export default function ProfileScreen() {
       </View>
 
       <ListSection title="Atalhos">
+        <ListRow title="Progresso" description="Evolução da carga em cada exercício" icon={TrendingUp} iconColor={colors.primary} onPress={() => router.push('/profile/progress')} />
         <ListRow title="Calendário de streak" icon={CalendarDays} iconColor={colors.streak} onPress={lockedOrGo('/profile/streak-calendar')} value={isPremium ? undefined : 'Premium'} />
         <ListRow title="Histórico de atividades" icon={History} onPress={() => router.push('/profile/log')} />
         <ListRow title="Conquistas" icon={Award} iconColor={colors.premium} onPress={() => router.push('/profile/badges')} />

@@ -15,7 +15,7 @@ const WEB_PATH_TO_ROUTE: [RegExp, (match: RegExpMatchArray) => Href][] = [
   [/^\/profile/, () => '/profile'],
   [/^\/friends/, () => '/friends'],
   [/^\/friend\/([^/]+)/, match => ({ pathname: '/friend/[id]', params: { id: match[1] } })],
-  [/^\/progress/, () => '/progress'],
+  [/^\/progress/, () => '/profile/progress'],
   [/^\/train/, () => '/'],
 ]
 

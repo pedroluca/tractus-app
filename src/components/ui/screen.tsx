@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import { RefreshControl, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useTabBarInset } from '@/components/floating-tab-bar'
 import { cn } from '@/lib/cn'
 import { useThemeColors } from '@/theme/colors'
 import { Text } from './text'
@@ -22,7 +23,7 @@ export function TabHeader({ title, subtitle, right }: { title: string; subtitle?
 
 type ScreenScrollProps = {
   children: ReactNode
-  /** Espaço extra no fim (ex.: telas de aba que ficam atrás da tab bar) */
+  /** Espaço extra no fim para a barra do sistema (nas abas, o espaço da tab bar já é reservado) */
   bottomInset?: boolean
   refreshing?: boolean
   onRefresh?: () => void
@@ -36,6 +37,7 @@ type ScreenScrollProps = {
  */
 export function ScreenScroll({ children, bottomInset = true, refreshing, onRefresh, contentClassName, header }: ScreenScrollProps) {
   const insets = useSafeAreaInsets()
+  const tabBarInset = useTabBarInset()
   const colors = useThemeColors()
   return (
     <View className="flex-1 bg-background">
@@ -43,7 +45,7 @@ export function ScreenScroll({ children, bottomInset = true, refreshing, onRefre
       <KeyboardAwareScrollView
         bottomOffset={24}
         keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{ paddingBottom: bottomInset ? insets.bottom + 32 : 24 }}
+        contentContainerStyle={{ paddingBottom: tabBarInset ? tabBarInset + 24 : bottomInset ? insets.bottom + 32 : 24 }}
         refreshControl={onRefresh ? (
           <RefreshControl refreshing={!!refreshing} onRefresh={onRefresh} colors={[colors.primary]} tintColor={colors.primary} progressBackgroundColor={colors.surface} />
         ) : undefined}

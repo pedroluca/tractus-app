@@ -2,7 +2,7 @@ import { router, useFocusEffect } from 'expo-router'
 import { Flame, Inbox, Search, UserPlus, UsersRound } from 'lucide-react-native'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { FlatList, RefreshControl, TextInput, View } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useTabBarInset } from '@/components/floating-tab-bar'
 import { IconButton } from '@/components/ui/icon-button'
 import { EmptyState, LoadingState } from '@/components/ui/misc'
 import { TabHeader } from '@/components/ui/screen'
@@ -17,7 +17,7 @@ import { useThemeColors } from '@/theme/colors'
 export default function FriendsScreen() {
   const profile = useCurrentUser()
   const colors = useThemeColors()
-  const insets = useSafeAreaInsets()
+  const tabBarInset = useTabBarInset()
   const [friends, setFriends] = useState<Friend[] | null>(null)
   const [refreshing, setRefreshing] = useState(false)
   const [search, setSearch] = useState('')
@@ -64,7 +64,7 @@ export default function FriendsScreen() {
         <FlatList
           data={filtered}
           keyExtractor={item => item.friendshipId}
-          contentContainerStyle={{ paddingBottom: insets.bottom + 24 }}
+          contentContainerStyle={{ paddingBottom: tabBarInset + 24 }}
           keyboardShouldPersistTaps="handled"
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={async () => { setRefreshing(true); await load(); setRefreshing(false) }} colors={[colors.primary]} tintColor={colors.primary} />}
           ListHeaderComponent={friends.length > 0 ? (

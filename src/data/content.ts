@@ -44,7 +44,7 @@ export const onboardingSteps: OnboardingStep[] = [
     id: 'progress',
     Icon: TrendingUp,
     title: 'Acompanhe sua evolução',
-    description: 'Na aba Progresso, veja a evolução da sua carga em cada exercício ao longo do tempo.',
+    description: 'Em Perfil › Progresso, veja a evolução da sua carga em cada exercício ao longo do tempo.',
   },
   {
     id: 'friends',

@@ -5,7 +5,7 @@ import { View } from 'react-native'
 import { Card } from '@/components/ui/card'
 import { EmptyState, LoadingState, StatTile } from '@/components/ui/misc'
 import { SelectField } from '@/components/ui/picker-sheet'
-import { ScreenScroll, SectionTitle, TabHeader } from '@/components/ui/screen'
+import { ScreenScroll, SectionTitle } from '@/components/ui/screen'
 import { Text } from '@/components/ui/text'
 import { WeightChart, type ChartPoint } from '@/components/weight-chart'
 import { getAllUserLogs } from '@/data/logs'
@@ -84,7 +84,6 @@ export default function ProgressScreen() {
 
   return (
     <ScreenScroll
-      header={<TabHeader title="Progresso" subtitle="Sua evolução de carga" />}
       refreshing={refreshing}
       onRefresh={async () => {
         setRefreshing(true)

@@ -31,6 +31,7 @@ export default function AppLayout() {
         <Stack.Screen name="friend/[id]/badges" options={{ title: 'Conquistas' }} />
         <Stack.Screen name="profile/badges" options={{ title: 'Conquistas' }} />
         <Stack.Screen name="profile/log" options={{ title: 'Histórico' }} />
+        <Stack.Screen name="profile/progress" options={{ title: 'Progresso' }} />
         <Stack.Screen name="profile/body-metrics" options={{ title: 'Métricas corporais' }} />
         <Stack.Screen name="profile/streak-calendar" options={{ title: 'Calendário de streak' }} />
         <Stack.Screen name="settings/index" options={{ title: 'Configurações' }} />

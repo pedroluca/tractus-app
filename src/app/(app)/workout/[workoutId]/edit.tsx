@@ -2,7 +2,7 @@ import { doc, onSnapshot } from '@react-native-firebase/firestore'
 import { router, useLocalSearchParams } from 'expo-router'
 import { ChevronDown, ChevronUp, Pencil, Plus, RotateCcw, Share2, Trash2 } from 'lucide-react-native'
 import { useEffect, useMemo, useState } from 'react'
-import { Alert, Pressable, View } from 'react-native'
+import { Pressable, View } from 'react-native'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { IconButton } from '@/components/ui/icon-button'
@@ -30,6 +30,7 @@ import { db } from '@/lib/firebase'
 import { haptics } from '@/lib/haptics'
 import { settle } from '@/lib/writes'
 import { useCurrentUser } from '@/providers/session-provider'
+import { useConfirm } from '@/providers/confirm-provider'
 import { useToast } from '@/providers/toast-provider'
 import { useThemeColors } from '@/theme/colors'
 
@@ -38,6 +39,7 @@ export default function EditWorkoutScreen() {
   const profile = useCurrentUser()
   const colors = useThemeColors()
   const toast = useToast()
+  const confirm = useConfirm()
 
   const [workout, setWorkout] = useState<Treino | null | undefined>(undefined)
   const [exercises, setExercises] = useState<Exercicio[] | null>(null)
@@ -99,52 +101,48 @@ export default function EditWorkoutScreen() {
   }
 
   const confirmDeleteExercise = (exercise: Exercicio) => {
-    Alert.alert('Excluir exercício', `Excluir "${exercise.titulo}" deste treino?`, [
-      { text: 'Cancelar', style: 'cancel' },
-      {
-        text: 'Excluir',
-        style: 'destructive',
-        onPress: () => {
-          setOrder(current => (current ? current.filter(id => id !== exercise.id) : current))
-          deleteExercise(workoutId, exercise.id).catch(() => toast.error('Não foi possível excluir o exercício.'))
-        },
+    confirm({
+      title: 'Excluir exercício',
+      message: `Excluir "${exercise.titulo}" deste treino?`,
+      confirmLabel: 'Excluir',
+      icon: Trash2,
+      onConfirm: () => {
+        setOrder(current => (current ? current.filter(id => id !== exercise.id) : current))
+        deleteExercise(workoutId, exercise.id).catch(() => toast.error('Não foi possível excluir o exercício.'))
       },
-    ])
+    })
   }
 
   const confirmReset = () => {
-    Alert.alert('Reiniciar progresso', 'Desmarcar todos os exercícios deste treino feitos hoje?', [
-      { text: 'Cancelar', style: 'cancel' },
-      {
-        text: 'Reiniciar',
-        style: 'destructive',
-        onPress: () => {
-          resetWorkoutExercises(workoutId)
-            .then(() => toast.success('Progresso reiniciado'))
-            .catch(() => toast.error('Não foi possível reiniciar.'))
-        },
-      },
-    ])
+    confirm({
+      title: 'Reiniciar progresso',
+      message: 'Desmarcar todos os exercícios deste treino feitos hoje?',
+      confirmLabel: 'Reiniciar',
+      icon: RotateCcw,
+      tone: 'warning',
+      onConfirm: () => resetWorkoutExercises(workoutId)
+        .then(() => toast.success('Progresso reiniciado'))
+        .catch(() => toast.error('Não foi possível reiniciar.')),
+    })
   }
 
   const confirmDeleteWorkout = () => {
     if (!workout) return
-    Alert.alert('Excluir treino', `Excluir "${workout.musculo}" e todos os exercícios dele? Essa ação não pode ser desfeita.`, [
-      { text: 'Cancelar', style: 'cancel' },
-      {
-        text: 'Excluir',
-        style: 'destructive',
-        onPress: async () => {
-          try {
-            await deleteWorkoutWithExercises(workout.id)
-            updateScheduledDays(workout.usuarioID)
-            router.back()
-          } catch {
-            toast.error('Não foi possível excluir o treino.')
-          }
-        },
+    confirm({
+      title: 'Excluir treino',
+      message: `Excluir "${workout.musculo}" e todos os exercícios dele? Essa ação não pode ser desfeita.`,
+      confirmLabel: 'Excluir',
+      icon: Trash2,
+      onConfirm: async () => {
+        try {
+          await deleteWorkoutWithExercises(workout.id)
+          updateScheduledDays(workout.usuarioID)
+          router.back()
+        } catch {
+          toast.error('Não foi possível excluir o treino.')
+        }
       },
-    ])
+    })
   }
 
   if (workout === undefined) return <LoadingState />

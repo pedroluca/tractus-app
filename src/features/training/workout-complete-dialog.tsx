@@ -32,7 +32,7 @@ export function WorkoutCompleteDialog({ visible, workoutName, result, onClose }:
     const timer = setTimeout(() => {
       setRevealed(true)
       haptics.success()
-      scale.value = withSequence(withSpring(1.35, { damping: 6 }), withTiming(1, { duration: 220 }))
+      scale.value = withSequence(withSpring(1.25, { damping: 8 }), withTiming(1, { duration: 220 }))
     }, 650)
     return () => clearTimeout(timer)
   }, [visible, animateIncrement, scale])
@@ -44,12 +44,16 @@ export function WorkoutCompleteDialog({ visible, workoutName, result, onClose }:
   const flameStyle = useAnimatedStyle(() => ({ transform: [{ scale: scale.value }] }))
 
   return (
-    <Dialog visible={visible} onClose={onClose}>
-      <View className="items-center gap-4">
-        <Animated.View style={flameStyle} className="items-center">
-          <View className="w-20 h-20 rounded-full items-center justify-center" style={{ backgroundColor: `${colors.streak}1F` }}>
+    <Dialog visible={visible} onClose={onClose} animation="pop">
+      <View className="items-center gap-4 pt-2">
+        <View className="items-center">
+          {/* Só o círculo pulsa: escalar o bloco inteiro estourava o padding do topo */}
+          <Animated.View
+            style={[flameStyle, { backgroundColor: `${colors.streak}1F` }]}
+            className="w-20 h-20 rounded-full items-center justify-center"
+          >
             <Flame size={40} color={colors.streak} fill={colors.streak} />
-          </View>
+          </Animated.View>
           <View className="h-9 justify-center mt-2">
             {displayStreak === null ? (
               <ActivityIndicator color={colors.streak} />
@@ -59,7 +63,7 @@ export function WorkoutCompleteDialog({ visible, workoutName, result, onClose }:
               </Text>
             )}
           </View>
-        </Animated.View>
+        </View>
 
         <View className="items-center gap-1">
           <Text variant="title" className="text-center">{headline}</Text>

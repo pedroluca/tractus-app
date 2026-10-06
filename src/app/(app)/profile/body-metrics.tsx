@@ -1,7 +1,7 @@
 import { Redirect, router } from 'expo-router'
 import { Activity, Minus, Plus, Trash2, TrendingDown, TrendingUp } from 'lucide-react-native'
 import { useEffect, useState } from 'react'
-import { Alert, View } from 'react-native'
+import { View } from 'react-native'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { IconButton } from '@/components/ui/icon-button'
@@ -13,6 +13,7 @@ import { deleteMeasurement, getBmiCategory, subscribeMeasurements } from '@/data
 import type { BodyMeasurement } from '@/data/types'
 import { formatDate, formatDecimal } from '@/lib/dates'
 import { useCurrentUser } from '@/providers/session-provider'
+import { useConfirm } from '@/providers/confirm-provider'
 import { useToast } from '@/providers/toast-provider'
 import { useThemeColors } from '@/theme/colors'
 
@@ -20,6 +21,7 @@ export default function BodyMetricsScreen() {
   const profile = useCurrentUser()
   const colors = useThemeColors()
   const toast = useToast()
+  const confirm = useConfirm()
   const [measurements, setMeasurements] = useState<BodyMeasurement[] | null>(null)
 
   useEffect(() => {
@@ -41,14 +43,13 @@ export default function BodyMetricsScreen() {
   const maxIdeal = 24.9 * heightM * heightM
 
   const confirmDelete = (measurement: BodyMeasurement) => {
-    Alert.alert('Excluir medição', `Excluir a medição de ${formatDate(measurement.data)}?`, [
-      { text: 'Cancelar', style: 'cancel' },
-      {
-        text: 'Excluir',
-        style: 'destructive',
-        onPress: () => deleteMeasurement(measurement.id).catch(() => toast.error('Não foi possível excluir a medição.')),
-      },
-    ])
+    confirm({
+      title: 'Excluir medição',
+      message: `Excluir a medição de ${formatDate(measurement.data)}?`,
+      confirmLabel: 'Excluir',
+      icon: Trash2,
+      onConfirm: () => deleteMeasurement(measurement.id).catch(() => toast.error('Não foi possível excluir a medição.')),
+    })
   }
 
   const chronological = [...measurements].reverse()

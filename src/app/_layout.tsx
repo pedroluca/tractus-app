@@ -9,6 +9,7 @@ import { KeyboardProvider } from 'react-native-keyboard-controller'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { trackScreen } from '@/lib/analytics'
 import { initPush } from '@/lib/push'
+import { ConfirmProvider } from '@/providers/confirm-provider'
 import { SessionProvider, useSession } from '@/providers/session-provider'
 import { ThemeProvider, useAppTheme } from '@/providers/theme-provider'
 import { ToastProvider } from '@/providers/toast-provider'
@@ -25,7 +26,9 @@ export default function RootLayout() {
           <SessionProvider>
             <ThemeProvider>
               <ToastProvider>
-                <RootNavigator />
+                <ConfirmProvider>
+                  <RootNavigator />
+                </ConfirmProvider>
               </ToastProvider>
             </ThemeProvider>
           </SessionProvider>

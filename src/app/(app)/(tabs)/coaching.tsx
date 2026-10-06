@@ -1,7 +1,7 @@
 import { router, useFocusEffect } from 'expo-router'
 import { Check, ChevronRight, ClipboardList, Search, Send, UserMinus, X } from 'lucide-react-native'
 import { useCallback, useState } from 'react'
-import { Alert, View } from 'react-native'
+import { View } from 'react-native'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { IconButton } from '@/components/ui/icon-button'
@@ -22,6 +22,7 @@ import {
 import type { UserProfile } from '@/data/types'
 import { haptics } from '@/lib/haptics'
 import { useCurrentUser } from '@/providers/session-provider'
+import { useConfirm } from '@/providers/confirm-provider'
 import { useToast } from '@/providers/toast-provider'
 import { useThemeColors } from '@/theme/colors'
 
@@ -29,6 +30,7 @@ export default function CoachingScreen() {
   const profile = useCurrentUser()
   const colors = useThemeColors()
   const toast = useToast()
+  const confirm = useConfirm()
   const isTrainer = !!profile.isTrainer
 
   const [data, setData] = useState<CoachingData | null>(null)
@@ -100,10 +102,13 @@ export default function CoachingScreen() {
   }
 
   const confirmUnlink = (user: UserProfile, relationId: string) => {
-    Alert.alert('Desfazer vínculo', `Remover o vínculo com ${user.nome}? Os treinos já criados continuam com o aluno.`, [
-      { text: 'Cancelar', style: 'cancel' },
-      { text: 'Remover', style: 'destructive', onPress: () => respond(relationId, false) },
-    ])
+    confirm({
+      title: 'Desfazer vínculo',
+      message: `Remover o vínculo com ${user.nome}? Os treinos já criados continuam com o aluno.`,
+      confirmLabel: 'Remover',
+      icon: UserMinus,
+      onConfirm: () => respond(relationId, false),
+    })
   }
 
   const relationIdWith = (otherId: string) =>

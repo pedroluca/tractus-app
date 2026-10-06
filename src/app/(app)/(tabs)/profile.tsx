@@ -25,7 +25,7 @@ import {
   Upload,
 } from 'lucide-react-native'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { ActivityIndicator, Alert, Pressable, View } from 'react-native'
+import { ActivityIndicator, Pressable, View } from 'react-native'
 import { BadgeStrip } from '@/components/badges'
 import { Avatar } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
@@ -53,6 +53,7 @@ import { env } from '@/lib/env'
 import { pickImage } from '@/lib/image'
 import { appVersion } from '@/lib/version'
 import { useCurrentUser, useSession } from '@/providers/session-provider'
+import { useConfirm } from '@/providers/confirm-provider'
 import { useToast } from '@/providers/toast-provider'
 import { useThemeColors } from '@/theme/colors'
 
@@ -61,6 +62,7 @@ export default function ProfileScreen() {
   const { signOut } = useSession()
   const colors = useThemeColors()
   const toast = useToast()
+  const confirm = useConfirm()
 
   const [workouts, setWorkouts] = useState<Treino[] | null>(null)
   const [friendsCount, setFriendsCount] = useState<number | null>(null)
@@ -109,18 +111,15 @@ export default function ProfileScreen() {
   }
 
   const confirmDeleteWorkout = (workout: Treino) => {
-    Alert.alert('Excluir treino', `Excluir "${workout.musculo}" (${workout.dia}) e todos os exercícios dele?`, [
-      { text: 'Cancelar', style: 'cancel' },
-      {
-        text: 'Excluir',
-        style: 'destructive',
-        onPress: () => {
-          deleteWorkoutWithExercises(workout.id)
-            .then(() => updateScheduledDays(profile.id))
-            .catch(() => toast.error('Não foi possível excluir o treino.'))
-        },
-      },
-    ])
+    confirm({
+      title: 'Excluir treino',
+      message: `Excluir "${workout.musculo}" (${workout.dia}) e todos os exercícios dele?`,
+      confirmLabel: 'Excluir',
+      icon: Trash2,
+      onConfirm: () => deleteWorkoutWithExercises(workout.id)
+        .then(() => updateScheduledDays(profile.id))
+        .catch(() => toast.error('Não foi possível excluir o treino.')),
+    })
   }
 
   const runExport = async (format: 'json' | 'csv') => {
@@ -133,10 +132,13 @@ export default function ProfileScreen() {
   }
 
   const confirmSignOut = () => {
-    Alert.alert('Sair da conta', 'Você precisará entrar de novo para acessar seus treinos.', [
-      { text: 'Cancelar', style: 'cancel' },
-      { text: 'Sair', style: 'destructive', onPress: () => signOut() },
-    ])
+    confirm({
+      title: 'Sair da conta',
+      message: 'Você precisará entrar de novo para acessar seus treinos.',
+      confirmLabel: 'Sair',
+      icon: LogOut,
+      onConfirm: () => signOut(),
+    })
   }
 
   const lockedOrGo = (premiumRoute: Parameters<typeof router.push>[0]) => () => router.push(isPremium ? premiumRoute : '/premium')

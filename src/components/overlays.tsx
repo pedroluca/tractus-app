@@ -173,7 +173,7 @@ function ReleaseNotesSheet({ visible, onClose }: { visible: boolean; onClose: ()
 function BirthdayDialog({ visible, name, onClose }: { visible: boolean; name: string; onClose: () => void }) {
   const colors = useThemeColors()
   return (
-    <Dialog visible={visible} onClose={onClose}>
+    <Dialog visible={visible} onClose={onClose} animation="pop">
       <View className="items-center gap-3">
         <View className="w-16 h-16 rounded-2xl items-center justify-center" style={{ backgroundColor: `${colors.premium}1F` }}>
           <Cake size={30} color={colors.premium} />

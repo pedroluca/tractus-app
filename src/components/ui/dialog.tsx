@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { Modal, Pressable, View } from 'react-native'
-import Animated, { FadeIn, FadeOut, ZoomIn } from 'react-native-reanimated'
+import Animated, { FadeIn, FadeOut, withTiming, ZoomIn, type EntryAnimationsValues } from 'react-native-reanimated'
 import { cn } from '@/lib/cn'
 
 type DialogProps = {
@@ -8,10 +8,25 @@ type DialogProps = {
   onClose?: () => void
   children: ReactNode
   className?: string
+  /** "pop" dá o pulo com mola, reservado para celebrações; o padrão só aparece suave */
+  animation?: 'subtle' | 'pop'
 }
 
-/** Caixa centralizada para avisos e celebrações (confirmações simples usam Alert nativo) */
-export function Dialog({ visible, onClose, children, className }: DialogProps) {
+const subtleEntering = (_values: EntryAnimationsValues) => {
+  'worklet'
+  return {
+    initialValues: { opacity: 0, transform: [{ scale: 0.96 }] },
+    animations: {
+      opacity: withTiming(1, { duration: 160 }),
+      transform: [{ scale: withTiming(1, { duration: 180 }) }],
+    },
+  }
+}
+
+const popEntering = ZoomIn.springify().damping(20).stiffness(260)
+
+/** Caixa centralizada para avisos e celebrações (confirmações usam useConfirm) */
+export function Dialog({ visible, onClose, children, className, animation = 'subtle' }: DialogProps) {
   return (
     <Modal visible={visible} transparent animationType="none" statusBarTranslucent navigationBarTranslucent onRequestClose={() => onClose?.()}>
       {visible && (
@@ -20,7 +35,7 @@ export function Dialog({ visible, onClose, children, className }: DialogProps) {
             <Pressable accessibilityLabel="Fechar" className="flex-1" onPress={onClose} disabled={!onClose} />
           </Animated.View>
           <Animated.View
-            entering={ZoomIn.springify().damping(20).stiffness(260)}
+            entering={animation === 'pop' ? popEntering : subtleEntering}
             className={cn('w-full max-w-sm bg-surface rounded-3xl p-6', className)}
           >
             {children}

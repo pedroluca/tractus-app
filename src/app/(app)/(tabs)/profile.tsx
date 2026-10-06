@@ -238,8 +238,8 @@ export default function ProfileScreen() {
           title={`Meus treinos${workouts?.length ? ` · ${workouts.length}` : ''}`}
           action={(
             <View className="flex-row gap-1 -my-2">
-              <IconButton icon={Upload} size={36} iconSize={18} accessibilityLabel="Importar treinos" onPress={() => router.push('/transfer/import')} />
-              <IconButton icon={Download} size={36} iconSize={18} accessibilityLabel="Exportar treinos" onPress={() => setExportMenu(true)} />
+              <IconButton icon={Download} size={36} iconSize={18} accessibilityLabel="Importar treinos" onPress={() => router.push('/transfer/import')} />
+              <IconButton icon={Upload} size={36} iconSize={18} accessibilityLabel="Exportar treinos" onPress={() => setExportMenu(true)} />
             </View>
           )}
         />

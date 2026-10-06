@@ -41,3 +41,10 @@ example
 # generated native folders
 /ios
 /android
+
+# env local (as variáveis vão para o app, mas os valores não devem ir para o git)
+.env
+
+# credenciais de assinatura do Android
+*.keystore
+credentials.json

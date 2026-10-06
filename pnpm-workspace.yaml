@@ -1,0 +1,8 @@
+# node_modules plano: no Windows os caminhos aninhados do pnpm passam de 260 caracteres
+# e quebram a compilação C++ dos módulos nativos (o ninja do CMake não aceita caminhos longos)
+nodeLinker: hoisted
+
+allowBuilds:
+  '@firebase/util': false
+  protobufjs: false
+  unrs-resolver: true

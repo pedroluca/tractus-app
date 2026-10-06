@@ -1,9 +1,76 @@
-:root {
-  --font-display:
-    Spline Sans, Inter, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji,
-    Segoe UI Symbol, Noto Color Emoji;
-  --font-mono:
-    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
-  --font-rounded: 'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif;
-  --font-serif: Georgia, 'Times New Roman', serif;
+@import 'tailwindcss';
+@import 'uniwind';
+
+/*
+ * Tokens de cor do app. Os valores em @theme são os do tema claro (e o que o Tailwind usa
+ * para gerar as classes); o bloco @variant dark sobrescreve no tema escuro.
+ * A cor primária é trocada em runtime (personalização Premium) via Uniwind.updateCSSVariables.
+ */
+@theme {
+  --color-primary: #27ae60;
+  --color-primary-strong: #219150;
+  --color-on-primary: #ffffff;
+
+  --color-background: #f4f5f7;
+  --color-surface: #ffffff;
+  --color-surface-2: #eef0f3;
+  --color-surface-3: #e3e6ea;
+  --color-border: #e2e5e9;
+  --color-foreground: #101214;
+  --color-muted: #5c636b;
+  --color-subtle: #8b929a;
+
+  --color-danger: #dc2626;
+  --color-warning: #d97706;
+  --color-info: #2563eb;
+  --color-success: #16a34a;
+  --color-streak: #f97316;
+  --color-premium: #d97706;
+  --color-founder: #9333ea;
+}
+
+@layer theme {
+  :root {
+    @variant light {
+      --color-primary: #27ae60;
+      --color-primary-strong: #219150;
+      --color-on-primary: #ffffff;
+      --color-background: #f4f5f7;
+      --color-surface: #ffffff;
+      --color-surface-2: #eef0f3;
+      --color-surface-3: #e3e6ea;
+      --color-border: #e2e5e9;
+      --color-foreground: #101214;
+      --color-muted: #5c636b;
+      --color-subtle: #8b929a;
+      --color-danger: #dc2626;
+      --color-warning: #d97706;
+      --color-info: #2563eb;
+      --color-success: #16a34a;
+      --color-streak: #f97316;
+      --color-premium: #d97706;
+      --color-founder: #9333ea;
+    }
+
+    @variant dark {
+      --color-primary: #27ae60;
+      --color-primary-strong: #219150;
+      --color-on-primary: #ffffff;
+      --color-background: #0b0c0e;
+      --color-surface: #15171a;
+      --color-surface-2: #1d2024;
+      --color-surface-3: #272b30;
+      --color-border: #272a2f;
+      --color-foreground: #f1f3f5;
+      --color-muted: #a3aab2;
+      --color-subtle: #6f767e;
+      --color-danger: #f87171;
+      --color-warning: #fbbf24;
+      --color-info: #60a5fa;
+      --color-success: #4ade80;
+      --color-streak: #fb923c;
+      --color-premium: #fbbf24;
+      --color-founder: #c084fc;
+    }
+  }
 }

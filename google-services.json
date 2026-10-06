@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "878016503949",
+    "project_id": "trainlog-ae8e6",
+    "storage_bucket": "trainlog-ae8e6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:878016503949:android:eaa6960452dff1cad042c4",
+        "android_client_info": {
+          "package_name": "br.com.apptractus"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCsVNtHKwSP2jEOE_YkgstjRRCuKAsbxk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:878016503949:android:7458540af8101f98d042c4",
+        "android_client_info": {
+          "package_name": "com.trainlog.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCsVNtHKwSP2jEOE_YkgstjRRCuKAsbxk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:878016503949:android:cec41bbf7480e58fd042c4",
+        "android_client_info": {
+          "package_name": "com.trainlog.app.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCsVNtHKwSP2jEOE_YkgstjRRCuKAsbxk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
